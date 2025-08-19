@@ -21,7 +21,7 @@ app.post("/api/users", (req, res) => {
   const username = req.body.username;
   const user = {
     username: username,
-    _id: users.length + 1,
+    _id: String(users.length + 1),
     log: [],
     count: 0,
   };
@@ -60,7 +60,13 @@ app.post("/api/users/:_id/exercises", (req, res) => {
   user.log.push(exercise);
   user.count = user.log.length;
 
-  res.json(user);
+  res.json({
+    username: user.username,
+    _id: user._id,
+    description: exercise.description,
+    duration: exercise.duration,
+    date: exercise.date
+  });
 });
 
 app.get("/api/users", (req, res) => {
@@ -91,7 +97,7 @@ app.get("/api/users/:_id/logs", (req, res) => {
       );
     }
     log = log.filter((item) => {
-      const itemDate = moment(item.date, "ddd MMM DD YYYYY");
+      const itemDate = moment(item.date, "ddd MMM DD YYYY");
       if (fromDate && toDate)
         return (
           itemDate.isSameOrAfter(fromDate, "day") &&
