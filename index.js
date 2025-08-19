@@ -30,7 +30,7 @@ app.post('/api/users', (req, res) => {
 })
 
 app.post('/api/users/:_id/exercises', (req, res) => {
-  const id = Number(req.params._id);
+  const id = req.params._id;
   const user = users.find(user => user._id == id);
   if(!user) return res.send('User not found');
   
@@ -50,20 +50,14 @@ app.post('/api/users/:_id/exercises', (req, res) => {
   
   const exercise = {
     description: description,
-    duration: duration,
+    duration: Number(duration),
     date: moment(date, 'YYYY-MM-DD').format('ddd MMM DD YYYY')
   }
   
   user.log.push(exercise)
   user.count = user.log.length;
   
-  res.json({
-    username: user.username,
-    description: exercise.description,
-    duration: exercise.duration,
-    date: exercise.date,
-    _id: user._id
-  })
+  res.json(user)
 })
 
 app.get('/api/users', (req, res) => {
@@ -71,7 +65,7 @@ app.get('/api/users', (req, res) => {
 })
 
 app.get('/api/users/:_id/logs', (req, res) => {
-  const id = Number(req.params._id);
+  const id = req.params._id;
   const user = users.find(user => user._id == id);
   if(!user) return res.send('User not found');
   let log = user.log || [];
