@@ -61,7 +61,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
 })
 
 app.get('/api/users', (req, res) => {
-  res.json(users.map(users => ({username: user.username, _id: user._id})));
+  res.json(users.map(user => ({username: user.username, _id: user._id})));
 })
 
 app.get('/api/users/:_id/logs', (req, res) => {
